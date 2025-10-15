@@ -64,6 +64,40 @@ class CodeSearchNetDataset:
             yield item[self.return_field]
 
 
+class SyntheticCppDataset:
+    """Wrapper for the ReySajju742/synthetic-cpp dataset."""
+
+    def __init__(self,
+                 split: str = "train",
+                 return_field: Literal["prompt", "response"] = "response"):
+        """
+        Args:
+            split: Dataset split to use (default: "train")
+            return_field: Field to return - options: "prompt", "response"
+        """
+        self.split = split
+        self.return_field = return_field
+
+        # Load the specified dataset from Hugging Face
+        self.dataset = load_dataset(
+            "ReySajju742/synthetic-cpp",
+            split=split,
+            streaming=False,
+        )
+
+    def __getitem__(self, index: int) -> str:
+        return self.dataset[index][self.return_field]
+
+    def __len__(self) -> int:
+        """Return the number of items in the dataset."""
+        return len(self.dataset)
+
+    def __iter__(self) -> Iterator[str]:
+        """Iterate through the dataset, yielding the specified field."""
+        for item in self.dataset:
+            yield item[self.return_field]
+
+
 # Example usage:
 if __name__ == "__main__":
     # Python functions
