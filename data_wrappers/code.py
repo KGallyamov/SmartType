@@ -47,12 +47,15 @@ class CodeSearchNetDataset:
         #     lambda x: x['language'] == self.language_full
         # )
 
-    def __getitem__(self, index: int) -> str:
+    def __getitem__(self, idx: int | slice):
         """Get the specified field at the given index."""
-        if not isinstance(index, int):
-            raise TypeError(f"Index must be an integer, got {type(index)}")
-
-        return self.dataset[index][self.return_field]
+        if isinstance(idx, int):
+            return self.dataset[idx][self.return_field]
+        elif isinstance(idx, slice):
+            sliced = CodeSearchNetDataset.__new__(CodeSearchNetDataset)
+            sliced.return_field = self.return_field
+            sliced.dataset = self.dataset.select(range(*idx.indices(len(self.dataset))))
+            return sliced
 
     def __len__(self) -> int:
         """Return the number of items in the filtered dataset."""
