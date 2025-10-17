@@ -1,5 +1,6 @@
 import random
 import string
+from tqdm.auto import tqdm
 
 import metrics
 from data_wrappers.code import CodeSearchNetDataset
@@ -11,19 +12,19 @@ class GeneticAlgorithm:
         self.MUTATION_RATE = mutation_rate
         self.PARENTS_CHILDREN = 4
 
-        self.simbols = list(string.ascii_lowercase) + [';', ',', '.', '/']
+        self.symbols = list(string.ascii_lowercase) + [';', ',', '.', '/']
         self.population = self.initialize_population()
 
         print('Loading dataset...')
-        self.dataset = CodeSearchNetDataset(language="python", split="train")[:3]
+        self.dataset = CodeSearchNetDataset(language="python", split="train")[:500]
         print('Dataset loaded.')
 
     def initialize_population(self):
         # Initialize a random population of keyboard layouts
         population = []
         for _ in range(self.POPULATION_SIZE):
-            random.shuffle(self.simbols)
-            population.append([self.simbols[:10], self.simbols[10:20], self.simbols[20:]])
+            random.shuffle(self.symbols)
+            population.append([self.symbols[:10], self.symbols[10:20], self.symbols[20:]])
         return population
 
     def select_parents(self):
@@ -84,10 +85,10 @@ class GeneticAlgorithm:
 
 
 if __name__ == '__main__':
-    ga = GeneticAlgorithm(population_size=50, mutation_rate=0.2)
-    generations = 40
+    ga = GeneticAlgorithm(population_size=20, mutation_rate=0.2)
+    generations = 100
 
-    for generation in range(generations):
+    for generation in tqdm(range(generations), desc="Generations"):
         ga.evolve()
         best_individual = max(ga.population, key=lambda x: metrics.evaluate_keyboard(x, ga.dataset)['Composite Score'])
         best_score = metrics.evaluate_keyboard(best_individual, ga.dataset)
