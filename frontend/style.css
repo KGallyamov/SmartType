@@ -1,0 +1,773 @@
+/*
+ * Общие стили для страницы в духе learn.dvorak.nl
+ * Используем CSS‑переменные, чтобы удобно менять цветовую палитру и размеры.
+ */
+
+/* Палитра и размеры */
+:root {
+  /* Базовая светлая палитра: один основной цвет и нейтральные оттенки. */
+  --bg-color: #f6f8fc;            /* светлый фон страницы */
+  --container-bg: #ffffff;         /* фон основного контейнера */
+  --text-color: #4b5563;           /* тёмно‑серый для основного текста (легче, чем чистый чёрный) */
+  --heading-color: #1f2937;        /* насыщенный тёмный цвет для заголовков */
+  --keyboard-bg: #f9fafb;          /* фон визуальной клавиатуры */
+  --keyboard-border: #e2e8f0;      /* цвет рамки клавиатуры */
+  --key-bg: #ffffff;               /* фон клавиши */
+  --key-border: #d1d5db;           /* цвет границы клавиши */
+  --key-pressed-bg: hsl(120, 70%, 85%);       /* фон нажатой клавиши (мягкий зелёный) */
+  --key-pressed-border: hsl(120, 70%, 60%);   /* рамка нажатой клавиши */
+  --table-header-bg: #f1f5f9;      /* фон заголовка таблицы */
+  --table-header-text: #1e40af;    /* тёмно‑синий для текста заголовка */
+  
+  /* Акцентные цвета для прогрессбаров, кнопок и выделения */
+  --accent-color: #0d6efd;         /* основной акцент (оттенок синего) */
+  --accent-color-dark: #084298;    /* более тёмный оттенок синего */
+  --overlay-bg: rgba(0, 0, 0, 0.55);
+
+  /* Общий радиус скругления элементов */
+  --radius: 8px;
+
+  /* Размер базового шрифта. Позволяет масштабировать интерфейс при включении специальных режимов. */
+  --base-font-size: 16px;
+
+  /* Цвет мини‑лейблов (второй подписи) на клавишах */
+  --sub-label-color: #6b7280;
+}
+
+/* Тёмный режим: альтернативные значения для тех же переменных. */
+body.dark {
+  --bg-color: #1a202c;             /* тёмный фон страницы */
+  --container-bg: #2d3748;          /* фон контейнера и карт */
+  --text-color: #e2e8f0;            /* светлый текст */
+  --heading-color: #f7fafc;         /* почти белый для заголовков */
+  --keyboard-bg: #2d3748;           /* фон клавиатуры */
+  --keyboard-border: #4a5568;       /* рамка клавиатуры */
+  --key-bg: #3b475a;                /* фон клавиши в тёмной теме */
+  --key-border: #4a5568;            /* граница клавиши в тёмной теме */
+  --key-pressed-bg: hsl(150, 50%, 25%); /* фон нажатой клавиши в тёмной теме */
+  --key-pressed-border: hsl(150, 60%, 35%);
+  --table-header-bg: #3c475c;       /* фон заголовка таблицы */
+  --table-header-text: #a0aec0;     /* светлый текст заголовка */
+  --accent-color: #63b3ed;         /* более светлый акцент */
+  --accent-color-dark: #3182ce;    /* тёмный акцент для наведения */
+  --overlay-bg: rgba(0, 0, 0, 0.65);
+
+  /* Цвет мини‑лейблов в тёмной теме */
+  --sub-label-color: #a0aec0;
+}
+
+/* Высококонтрастный режим: обеспечивает максимальный контраст текста и фона и
+ * увеличивает размеры шрифта для лучшей читаемости. Цвета подобраны так,
+ * чтобы обеспечивать отношение контраста не ниже 7:1. */
+body.high-contrast {
+  --bg-color: #000000;
+  --container-bg: #000000;
+  --text-color: #ffffff;
+  --heading-color: #ffffff;
+  --keyboard-bg: #000000;
+  --keyboard-border: #444444;
+  --key-bg: #1a1a1a;
+  --key-border: #666666;
+  --key-pressed-bg: #2d2d2d;
+  --key-pressed-border: #bbbbbb;
+  --table-header-bg: #2b2b2b;
+  --table-header-text: #ffffff;
+  --accent-color: #f5a623;          /* насыщённый янтарный цвет для акцентов */
+  --accent-color-dark: #d38c0c;
+  --overlay-bg: rgba(255, 255, 255, 0.75);
+  --base-font-size: 18px;          /* увеличиваем базовый размер шрифта */
+
+  /* Цвет мини‑лейблов в высококонтрастном режиме */
+  --sub-label-color: #cccccc;
+}
+
+/* Базовые стили страницы */
+body {
+  /* Используем шрифт Inter, а также системные шрифты как запасные варианты */
+  font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: var(--base-font-size);
+}
+
+/* Контейнер, в который помещается весь контент */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: var(--container-bg);
+  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
+  padding: 20px 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 2rem;
+  color: var(--heading-color);
+}
+
+h2 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: var(--heading-color);
+}
+
+header p {
+  font-size: 0.95rem;
+  margin-top: 5px;
+  color: #444444;
+}
+
+/* Визуальная клавиатура */
+.keyboard {
+  display: inline-block;
+  padding: 12px;
+  background-color: var(--keyboard-bg);
+  border: 1px solid var(--keyboard-border);
+  border-radius: var(--radius);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Каждая строка клавиатуры отображается без промежутков между клавишами, чтобы визуально образовывать сплошной блок */
+.keyboard .row {
+  display: flex;
+  gap: 0;
+  margin-bottom: 4px;
+}
+
+/* Для новой раскладки SmartType ряды одинаковой длины, поэтому
+ * смещения не требуются. Удаляем отступы между рядами. */
+.keyboard .row:nth-child(2),
+.keyboard .row:nth-child(3) {
+  margin-left: 0;
+}
+
+/* Стили для каждой клавиши: без промежутков между клавишами, единая граница для всего ряда */
+.keyboard .key {
+  flex: 0 0 auto;
+  min-width: 42px;
+  padding: 14px 6px;
+  border: 1px solid var(--key-border);
+  text-align: center;
+  font-size: 0.95rem;
+  background-color: var(--key-bg);
+  cursor: default;
+  user-select: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
+
+  /* Разрешаем относительное позиционирование для размещения мини‑лейбла */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Стили для основного символа (новый символ раскладки) на клавише */
+.keyboard .key .main-label {
+  font-size: 0.95rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Стили для мини‑лейбла родной раскладки (физической клавиши) */
+.keyboard .key .sub-label {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.55rem;
+  line-height: 1;
+  color: var(--sub-label-color);
+  pointer-events: none;
+}
+
+/* Убираем внутренние границы между клавишами внутри ряда */
+.keyboard .row .key:not(:last-child) {
+  border-right: 0;
+}
+
+/* Убираем нижние границы для всех рядов, кроме последнего, чтобы ряды соединялись */
+.keyboard .row:not(:last-child) .key {
+  border-bottom: 0;
+}
+
+/* Закругляем только внешний контур клавиатуры: верхний ряд сверху, нижний ряд снизу, а также первые и последние клавиши в рядах */
+.keyboard .row:first-child .key:first-child {
+  border-top-left-radius: 6px;
+}
+.keyboard .row:first-child .key:last-child {
+  border-top-right-radius: 6px;
+}
+.keyboard .row:last-child .key:first-child {
+  border-bottom-left-radius: 6px;
+}
+.keyboard .row:last-child .key:last-child {
+  border-bottom-right-radius: 6px;
+}
+
+.keyboard .key:last-child {
+  margin-right: 0;
+}
+
+/* Легкая микро‑анимация: при наведении клавиша чуть поднимается и появляется тень */
+.keyboard .key:not(.pressed):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.keyboard .key.pressed {
+  background-color: var(--key-pressed-bg);
+  border-color: var(--key-pressed-border);
+}
+
+/* Таблицы соответствия и метрик */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: 0.9rem;
+}
+
+th {
+  background-color: var(--table-header-bg);
+  color: var(--table-header-text);
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+/* Поле для ввода */
+#input {
+  width: 100%;
+  min-height: 140px;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  box-sizing: border-box;
+  background-color: #fdfdfd;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Примечания или важные блоки (используется для вывода источников) */
+.note {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Блок примечания или подсказки с красноватым фоном, напоминающий подсветку на learn.dvorak.nl */
+.note-box {
+  margin-top: 30px;
+  padding: 16px 20px;
+  background-color: #fff5f5;
+  border: 1px solid #f8c3c5;
+  border-radius: 8px;
+  color: #5b3a3a;
+  font-size: 0.92rem;
+}
+
+/* Общий отступ для секций */
+section {
+  margin-bottom: 30px;
+}
+
+/* Стили для блока details с таблицей соответствия клавиш */
+details {
+  margin-top: 10px;
+}
+
+details summary {
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+  list-style: none;
+  /* убираем стандартные стрелочки в Safari/Chrome */
+  outline: none;
+}
+
+/* Добавляем пользовательский индикатор раскрытия */
+details summary::after {
+  content: " \25BC"; /* стрелка вниз */
+  font-size: 0.8rem;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+details[open] summary::after {
+  content: " \25B2"; /* стрелка вверх */
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] summary {
+  margin-bottom: 12px;
+}
+
+/* -------------------------------------------------- */
+/* Новые стили для расширенного интерфейса тренажёра */
+/* -------------------------------------------------- */
+
+/* Панель урока с прогрессом и статистикой */
+.lesson-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Выпадающий список выбора урока. Стили подобраны, чтобы он
+ * гармонировал с общей палитрой и скруглениями. */
+/* Стили для выпадающих списков уроков и исходных раскладок */
+.lesson-select,
+.base-select {
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  border: 1px solid var(--key-border);
+  border-radius: var(--radius);
+  background-color: var(--key-bg);
+  color: var(--heading-color);
+  cursor: pointer;
+  /* appearance: none;  убирать стрелку не нужно, так как выпадающий список
+     должен быть очевиден для пользователя */
+}
+
+/* В тёмном и высококонтрастном режимах select наследует соответствующие переменные */
+body.dark .lesson-select,
+body.dark .base-select {
+  background-color: var(--key-bg);
+  border-color: var(--key-border);
+  color: var(--text-color);
+}
+
+body.high-contrast .lesson-select,
+body.high-contrast .base-select {
+  background-color: var(--key-bg);
+  border-color: var(--key-border);
+  color: var(--text-color);
+}
+
+.lesson-info {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+.progress {
+  flex: 1 1 200px;
+  height: 10px;
+  background-color: #e5e7eb;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 0 12px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background-color: var(--accent-color);
+  transition: width 0.3s ease;
+}
+
+.stats {
+  display: flex;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+/* Строка подсказок с целевыми словами */
+.prompt-line {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background-color: #f9f9fb;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  line-height: 1.4;
+  min-height: 40px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.prompt-line .done {
+  color: #999;
+}
+.prompt-line .focus {
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.prompt-line .upcoming {
+  color: #555;
+}
+
+
+/* Живые метрики */
+#mini-metrics {
+  margin-top: 20px;
+}
+
+.metrics-mini {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px 20px;
+  font-size: 0.92rem;
+}
+
+.metrics-mini div strong {
+  color: var(--accent-color-dark);
+}
+
+/* Кнопка для вызова шпаргалки */
+.legend-button {
+  margin-top: 12px;
+  padding: 4px 8px;
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Переключатель темы (светлая/тёмная). Размещается в правом верхнем углу героя. */
+.theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--container-bg);
+  color: var(--accent-color);
+  cursor: pointer;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  z-index: 100;
+}
+
+/* Обеспечиваем размер и видимость встроенных SVG‑иконок в кнопках. */
+.theme-toggle svg,
+.legend-button svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  pointer-events: none; /* позволяет нажимать на кнопку, а не на SVG */
+}
+
+.theme-toggle:hover {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.legend-button:hover {
+  background-color: var(--accent-color-dark);
+}
+
+/* Модальное окно для шпаргалки */
+.legend-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--overlay-bg);
+  z-index: 1000;
+}
+
+.legend-overlay.hidden {
+  display: none;
+}
+
+.legend-box {
+  position: relative;
+  background-color: var(--container-bg);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.legend-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--heading-color);
+}
+
+#legend-search {
+  width: 100%;
+  padding: 6px 8px;
+  margin: 10px 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+/* Таблица в модальном окне */
+#legend-modal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#legend-modal-table th,
+#legend-modal-table td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+#legend-modal-table th {
+  background-color: var(--table-header-bg);
+  color: var(--table-header-text);
+}
+
+/* Раньше клавиши окрашивались в зависимости от количества нажатий (тепловая карта).
+ * Эта функция отключена, поэтому устанавливаем нейтральный фон для элементов с data-score.
+ */
+.keyboard .key[data-score] {
+  background-color: var(--key-bg);
+}
+
+/* На нажатой клавише чуть уменьшаем яркость */
+/*
+ * При нажатии клавиша подсвечивается зелёным цветом примерно на одну секунду.
+ * Старый синий акцент заменён на светло‑зелёный, чтобы визуально отделить
+ * подсветку нажатой клавиши от тепловой карты. Параметры фильтра оставлены
+ * для лёгкого затемнения.
+ */
+/* Подсветка нажатой клавиши: использует переменные для светлой и тёмной тем */
+.keyboard .key.pressed {
+  background-color: var(--key-pressed-bg);
+  border-color: var(--key-pressed-border);
+  filter: brightness(0.95);
+}
+
+/*
+ * Дополнительные состояния подсветки для тренировочного режима
+ *
+ * target         – активная целевая буква новой раскладки. Этот класс
+ *                   используется, чтобы подсветить ту клавишу, символ которой
+ *                   будет вставлен после нажатия физической клавиши. Цвет
+ *                   фона слегка подсвечен, контур выделен акцентным цветом.
+ * pressed-phys   – выделение физической клавиши, которая была нажата. Это
+ *                   помогает пользователю видеть, какую реальную клавишу он
+ *                   нажал на клавиатуре. Используется вместе с target для
+ *                   прозрачной визуальной связи между QWERTY и новой
+ *                   раскладкой.
+ * clear          – служебный класс для полной очистки состояния подсветки
+ *                   на всякий случай. Он переопределяет фон и рамку.
+ */
+.keyboard .key.target {
+  background-color: #e7f3ff;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+.keyboard .key.pressed-phys {
+  filter: brightness(0.98);
+  box-shadow: inset 0 0 0 2px rgba(13, 110, 253, 0.35);
+}
+
+.keyboard .key.clear {
+  background-color: var(--key-bg);
+  border-color: var(--key-border);
+  box-shadow: none;
+}
+
+/*
+ * Новая разметка и стили для современного вида в духе miku.dev
+ */
+
+/* Геройская секция с заголовком и описанием */
+.hero {
+  background-color: var(--bg-color);
+  padding: 60px 20px 40px;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative; /* позволит размещать переключатель темы */
+}
+
+.hero-content h1 {
+  margin: 0;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.hero-content p {
+  margin: 12px auto 0;
+  max-width: 640px;
+  font-size: 1.05rem;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* Основной контейнер для содержимого страницы */
+.main-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+/* Сетка для практической секции */
+.practice-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+/* Карточка практики (левая колонка) */
+.practice-card {
+  flex: 1 1 650px;
+  background-color: var(--container-bg);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  min-width: 300px;
+  transition: box-shadow 0.2s ease, background-color 0.3s ease;
+}
+
+/* При наведении добавляем лёгкое возвышение для карточек */
+.practice-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Боковая колонка (правая) */
+.sidebar {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 250px;
+}
+
+/* Карточки статистики и метрик */
+.stats-card,
+.metrics-card {
+  background-color: var(--container-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, background-color 0.3s ease;
+}
+
+.stats-card:hover,
+.metrics-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.stats-card h3,
+.metrics-card h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  color: var(--heading-color);
+}
+
+.stat-row,
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.stat-row span:last-child {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.metric-row strong {
+  color: var(--accent-color-dark);
+  font-weight: 600;
+}
+
+/* Обёртка для клавиатуры в карточке практики */
+.keyboard-wrapper {
+  margin-top: 24px;
+}
+
+.keyboard-heading {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+/* Перестраиваем сетку под мобильные устройства */
+@media (max-width: 768px) {
+  .practice-grid {
+    flex-direction: column;
+  }
+  .practice-card {
+    flex-basis: 100%;
+  }
+  .sidebar {
+    flex-basis: 100%;
+  }
+}
